@@ -11,7 +11,7 @@ elseif(p>1)
     p = 1;
 end
 
-EB_i=M/n*(1-p)^(n-1);
+EB_i=0;
 integrant = @(y) y .* n .* p.*(p.*y +(1-p)).^(n-1) ;
 EB_org = integral(integrant, 0, 1) - M;
 end

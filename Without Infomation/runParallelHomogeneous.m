@@ -1,7 +1,18 @@
 function [EB_org,EB_i,p,fval,flag] = runParallelHomogeneous(M, c, n)
 flag=0;
 fun=@(x)(Equilibrium( x, M, c, n));
-[res, fval]=fsolve(fun,0.5); 
+opts = optimset('fsolve');
+opts.Display = 'none';
+opts.MaxIter = 2000;
+opts.MaxFunEvals = 2000;
+[res , fval, exitflag, output] = fsolve(fun, 0.5,opts);
+if (exitflag <= 0)
+    disp('exitflag');
+    disp(exitflag);
+    disp('output');
+    disp(output);
+end
+
 p=res;
 if(p<0)
     flag=-1;

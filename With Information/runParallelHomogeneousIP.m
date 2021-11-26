@@ -10,7 +10,18 @@ funcs = @(p, q, T) [P_win(T, p, q, T, n) * M - c_p;
 F = @(x) funcs(x(1), x(2), x(3));
 
 x0 = [0.5,0.5,0.5];
-[x , fval] = fsolve(F, x0);
+opts = optimset('fsolve');
+opts.Display = 'none';
+opts.MaxIter = 2000;
+opts.MaxFunEvals = 2000;
+[x , fval, exitflag, output] = fsolve(F, x0,opts);
+if (exitflag <= 0)
+    disp('exitflag');
+    disp(exitflag);
+    disp('output');
+    disp(output);
+end
+
 p = x(1);
 q = x(2);
 T = x(3);

@@ -2,6 +2,9 @@ function result = P_win(t, p, q, T, n)
 if t > T
     T = t;
 end
+
+
+
 result = 0;
 for j=0:n-1
     sum=0;

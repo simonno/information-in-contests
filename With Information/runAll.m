@@ -2,12 +2,12 @@
 
 function [z]= runAll()
 n = 3;
-M = 0.6;
+M = 10;
 limUp = 1; %if changes, F_big anf f_small should be modified as well.
 limDown = 0;
 
-cpx = 0.1:0.1:0.6;
-cix = 0.05:0.05:0.6;
+cpx = 1:1:6;
+cix = 0.5:0.5:6;
 
 xls_output_pm = zeros(length(cpx)*length(cix), 12);
 

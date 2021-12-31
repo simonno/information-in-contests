@@ -3,9 +3,9 @@
 function [z]= runAll()
 global par;
 par.n = 3;
-par.c = 0.2;
-par.c_p = 0.03;
-par.M = 0.4;
+par.c = 0.5;
+par.c_p = 0.13;
+par.M = 0.7;
 par.limUp = 1; %if changes, F_big and f_small should be modified as well.
 par.limDown = 0;
 EPSILON = 0.001;
@@ -29,15 +29,15 @@ for p = 0.01:jump:1
             TOpt = 0;
         end
         %EB(not purchase and participate) 
-        eq2 = @(t)(f_small(t)*P_win(t,TOpt,p,q));
-        f1 = -c+M*quadv(eq2,limDown,limUp);
+        eq2 = @(t)(f_small(t).*P_win(t,TOpt,p,q));
+        f1 = -c+M*integral(eq2,limDown,limUp);
 
         %EB(purchase and participate) 
-        eq3 = @(t)(f_small(t)*P_win(t,TOpt,p,q));
-        f2 = -c-c_p+M*quadv(eq3,TOpt,limUp);
-        %if (f1>0 && f1<EPSILON && f2>0 && f2<EPSILON)
-        %    disp('Found!');
-        %end
+        eq3 = @(t)(f_small(t).*P_win(t,TOpt,p,q));
+        f2 = -c-c_p*(1-F_big(TOpt))+M*integral(eq3,TOpt,limUp);
+        if (f1>0 && f1<EPSILON && f2>0 && f2<EPSILON)
+            disp('Found!');
+        end
         xls_output(i,1) = M;
         xls_output(i,2) = n;
         xls_output(i,3) = c;
@@ -54,5 +54,7 @@ for p = 0.01:jump:1
     %   fprintf('p value is %d\n',p);
     %end
 end
-xlswrite('excelM1',xls_output,'test1','A2');
+col_names = {'M', 'n','c_participate', 'c_information','p','q','T_optimal','fval', 'B_Participate', 'B_Purchase'};
+t = array2table(xls_output,'VariableNames',col_names);
+writetable(t,'ParallelHomogeneousWithInformationProvider.xlsx',"WriteMode","overwritesheet","AutoFitWidth",false);
 end

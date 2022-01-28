@@ -6,7 +6,7 @@ if t > T
     T = t;
 end
 result = 0;
-for w = 0:n-k
+for w = 0:n-k-1
     result = result + (nchoosek(n - k - 1, w).*(p.^w)*(1-p).^(n-k-w -1)).*F_big(t).^w;        
 end
 result = F_big(T).^k.*result;   

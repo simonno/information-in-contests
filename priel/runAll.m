@@ -8,7 +8,7 @@ par.c = 0.5;
 par.M = 0.7;
 par.limUp = 1; %if changes, F_big and f_small should be modified as well.
 par.limDown = 0;
-EPSILON = 0.0001;
+EPSILON = 10^-4;
 jump = 0.001;
 
 n = par.n;
@@ -24,8 +24,11 @@ for p = 0.001:jump:1
     eq1 = @(T) (P_win(T,T,p)*M - c);
     [res, fval] = fzero(eq1,0.5);
     TOpt = res;
-    if TOpt < 0
+    if TOpt < 0 
         TOpt = 0;
+    end
+    if TOpt > 1 
+        TOpt = 1;
     end
     %EB(not purchase and participate) 
     eq2 = @(t)(f_small(t).*P_tag_win(t,TOpt,p));
@@ -34,6 +37,7 @@ for p = 0.001:jump:1
     if (abs(f1)<EPSILON)
         disp('Found! n=%d k=%d M=%.2f c=%.2f p=%.4f Topt=%.4f EB=%.5f', n,k,M,c,p,TOpt,f1);
     end
+
     xls_output(i,1) = M;
     xls_output(i,2) = n;
     xls_output(i,3) = k;
